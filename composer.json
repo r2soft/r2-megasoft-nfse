@@ -1,0 +1,19 @@
+{
+    "name": "r2soft/nfse-megasoft",
+    "description": "Integração NFSe Megasoft ABRASF v2.04 — emissão, cancelamento e consulta via SOAP",
+    "type": "library",
+    "license": "proprietary",
+    "require": {
+        "php": ">=7.3",
+        "ext-openssl": "*",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-soap": "*",
+        "robrichards/xmlseclibs": "^3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "R2soft\\MegasoftNfse\\": "src/"
+        }
+    }
+}
