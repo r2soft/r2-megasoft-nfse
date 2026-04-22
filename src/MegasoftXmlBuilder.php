@@ -200,6 +200,11 @@ XML;
 
     private function dec(string $v): string
     {
+        // Sem vírgula: já está em formato internacional (ex: "1058.82").
+        // Com vírgula: formato brasileiro ("1.058,82") — remove pontos de milhar e troca , por .
+        if (strpos($v, ',') === false) {
+            return number_format((float) $v, 2, '.', '');
+        }
         return number_format((float) str_replace(['.', ','], ['', '.'], $v), 2, '.', '');
     }
 
