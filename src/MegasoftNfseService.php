@@ -148,7 +148,7 @@ class MegasoftNfseService
 
         $doc = new \DOMDocument();
         libxml_use_internal_errors(true);
-        @$doc->loadXML($xmlRetorno, LIBXML_RECOVER | LIBXML_NOERROR | LIBXML_NOWARNING);
+        @$doc->loadXML($xmlRetorno, \LIBXML_RECOVER | \LIBXML_NOERROR | \LIBXML_NOWARNING);
         libxml_clear_errors();
 
         if (!$doc->documentElement) {
