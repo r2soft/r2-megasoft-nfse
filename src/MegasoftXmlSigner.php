@@ -16,18 +16,22 @@ use RobRichards\XMLSecLibs\XMLSecurityKey;
  */
 class MegasoftXmlSigner
 {
-    public function sign(string $xml, string $pfxPath, string $pfxSenha, string $rpsId): string
+    /**
+     * Assina o XML e retorna o XML com <ds:Signature> inserida.
+     *
+     * @param string $xml          XML sem assinatura gerado por MegasoftXmlBuilder
+     * @param string $pfxConteudo  Conteúdo binário do arquivo .pfx
+     * @param string $pfxSenha     Senha do certificado
+     * @param string $rpsId        Id do elemento <Rps> interno (ex: "pfxd12b7a9b-...")
+     * @throws MegasoftNfseException
+     */
+    public function sign(string $xml, string $pfxConteudo, string $pfxSenha, string $rpsId): string
     {
-        if (!file_exists($pfxPath)) {
-            throw new MegasoftNfseException("Certificado não encontrado: {$pfxPath}");
+        if ($pfxConteudo === '') {
+            throw new MegasoftNfseException('Certificado digital não configurado.');
         }
 
-        $pfxData = file_get_contents($pfxPath);
-        if ($pfxData === false) {
-            throw new MegasoftNfseException("Não foi possível ler o certificado: {$pfxPath}");
-        }
-
-        if (!openssl_pkcs12_read($pfxData, $certInfo, $pfxSenha)) {
+        if (!openssl_pkcs12_read($pfxConteudo, $certInfo, $pfxSenha)) {
             throw new MegasoftNfseException('Senha do certificado inválida ou arquivo .pfx corrompido.');
         }
 

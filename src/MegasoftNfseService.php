@@ -20,7 +20,8 @@ class MegasoftNfseService
     /**
      * Emite uma NFS-e.
      *
-     * @param array $config  wsdl_url, certificado_path, certificado_senha (decriptada),
+     * @param array $config  wsdl_url, certificado_conteudo (bytes do .pfx),
+     *                       certificado_senha (decriptada),
      *                       ambiente (prod|hom|mock), wsdl_cache_dir (opcional)
      * @param array $dados   Ver MegasoftXmlBuilder::buildGerarNfseEnvio
      *
@@ -41,8 +42,8 @@ class MegasoftNfseService
             $xmlSem      = $this->builder->buildGerarNfseEnvio($dados, $rpsId);
             $xmlAssinado = $this->signer->sign(
                 $xmlSem,
-                $config['certificado_path'],
-                $config['certificado_senha'],
+                $config['certificado_conteudo'] ?? '',
+                $config['certificado_senha'] ?? '',
                 $rpsId
             );
 
@@ -70,7 +71,7 @@ class MegasoftNfseService
     /**
      * Cancela uma NFS-e.
      *
-     * @param array $config  wsdl_url, certificado_path, certificado_senha, ambiente
+     * @param array $config  wsdl_url, certificado_conteudo, certificado_senha, ambiente
      * @param array $dados   numero_nfse, codigo_municipio, prestador_cpf_cnpj,
      *                       prestador_tipo, prestador_im, codigo_cancelamento
      * @return array { sucesso, xml_retorno, mensagem }
@@ -100,7 +101,7 @@ class MegasoftNfseService
     /**
      * Consulta NFS-e por número de RPS.
      *
-     * @param array $config  wsdl_url, certificado_path, certificado_senha, ambiente
+     * @param array $config  wsdl_url, certificado_conteudo, certificado_senha, ambiente
      * @param array $dados   numero_rps, prestador_cpf_cnpj, prestador_tipo, prestador_im
      * @return array { sucesso, numero_nfse, codigo_verificacao, xml_retorno, mensagem }
      */
@@ -133,7 +134,7 @@ class MegasoftNfseService
             $config['wsdl_url'],
             $config['ambiente'] ?? 'prod',
             30,
-            $config['certificado_path'] ?? null,
+            $config['certificado_conteudo'] ?? null,
             $config['certificado_senha'] ?? null,
             $config['wsdl_cache_dir'] ?? null
         );

@@ -11,27 +11,42 @@ class MegasoftSoapClient
     private string  $wsdlUrl;
     private string  $ambiente;
     private int     $timeout;
-    private ?string $certPath;
+    private ?string $certPath = null;
     private ?string $certSenha;
     private string  $wsdlCacheDir;
+    private ?string $certTempPath = null;
 
     /**
-     * @param string|null $wsdlCacheDir  Diretório para cache do WSDL. Default: sys_get_temp_dir()
+     * @param string|null $certConteudo Conteúdo binário do .pfx (materializado em tmpfile para uso pelo curl).
+     * @param string|null $wsdlCacheDir Diretório para cache do WSDL. Default: sys_get_temp_dir()
      */
     public function __construct(
         string  $wsdlUrl,
         string  $ambiente = 'prod',
         int     $timeout = 30,
-        ?string $certPath = null,
+        ?string $certConteudo = null,
         ?string $certSenha = null,
         ?string $wsdlCacheDir = null
     ) {
         $this->wsdlUrl      = trim($wsdlUrl);
         $this->ambiente     = $ambiente;
         $this->timeout      = $timeout;
-        $this->certPath     = $certPath;
         $this->certSenha    = $certSenha;
         $this->wsdlCacheDir = rtrim($wsdlCacheDir ?? sys_get_temp_dir(), DIRECTORY_SEPARATOR);
+
+        if ($certConteudo !== null && $certConteudo !== '') {
+            $tmp = tempnam(sys_get_temp_dir(), 'nfse_cert_');
+            file_put_contents($tmp, $certConteudo);
+            $this->certTempPath = $tmp;
+            $this->certPath     = $tmp;
+        }
+    }
+
+    public function __destruct()
+    {
+        if ($this->certTempPath && file_exists($this->certTempPath)) {
+            @unlink($this->certTempPath);
+        }
     }
 
     /**
