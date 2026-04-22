@@ -83,10 +83,28 @@ class MegasoftNfseService
             $client     = $this->makeSoapClient($config);
             $xmlRetorno = $client->call('CancelarNfse', $xml);
 
+            if (empty($xmlRetorno)) {
+                return [
+                    'sucesso'     => false,
+                    'xml_retorno' => null,
+                    'mensagem'    => 'Resposta vazia do webservice — cancelamento não confirmado.',
+                ];
+            }
+
+            $temErro = $this->temErro($xmlRetorno);
+            $temConfirmacao = str_contains($xmlRetorno, '<Confirmacao>')
+                           || str_contains($xmlRetorno, '<DataHora>')
+                           || str_contains($xmlRetorno, '<NfseCancelamento>');
+
+            $sucesso = !$temErro && $temConfirmacao;
+            $mensagem = $temErro
+                ? $this->extrairMensagemErro($xmlRetorno)
+                : ($temConfirmacao ? null : 'Retorno do webservice sem confirmação de cancelamento.');
+
             return [
-                'sucesso'     => !$this->temErro($xmlRetorno),
+                'sucesso'     => $sucesso,
                 'xml_retorno' => $xmlRetorno,
-                'mensagem'    => $this->extrairMensagemErro($xmlRetorno),
+                'mensagem'    => $mensagem,
             ];
 
         } catch (MegasoftNfseException $e) {
