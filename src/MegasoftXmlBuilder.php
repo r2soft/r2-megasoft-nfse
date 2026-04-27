@@ -74,6 +74,14 @@ class MegasoftXmlBuilder
             ? "<NumeroNbs>{$d['numero_nbs']}</NumeroNbs>"
             : '';
 
+        $itemListaServico = !empty($d['item_lista_servico'])
+            ? "<ItemListaServico>{$d['item_lista_servico']}</ItemListaServico>"
+            : '';
+
+        $codigoCnae = !empty($d['codigo_cnae'])
+            ? "<CodigoCnae>{$d['codigo_cnae']}</CodigoCnae>"
+            : '';
+
         $ns = self::NAMESPACE_XSD;
 
         return <<<XML
@@ -101,8 +109,10 @@ class MegasoftXmlBuilder
                <DescontoCondicionado>{$d['desconto_condicionado']}</DescontoCondicionado>
             </Valores>
             <IssRetido>{$d['iss_retido']}</IssRetido>
+            {$itemListaServico}
             <CodigoMunicipio>{$d['codigo_municipio']}</CodigoMunicipio>
             <CodigoTributacaoMunicipio>{$d['codigo_tributacao']}</CodigoTributacaoMunicipio>
+            {$codigoCnae}
             <Exigibilidade>{$d['exigibilidade']}</Exigibilidade>
             {$numeroNbs}
             <Discriminacao>{$this->esc($d['discriminacao'])}</Discriminacao>
@@ -129,6 +139,8 @@ class MegasoftXmlBuilder
                <CodigoMunicipio>{$d['tomador_cod_municipio']}</CodigoMunicipio>
             </Endereco>
          </Tomador>
+         <OptanteSimplesNacional>{$d['optante_simples_nacional']}</OptanteSimplesNacional>
+         <IncentivoFiscal>{$d['incentivo_fiscal']}</IncentivoFiscal>
       </InfDeclaracaoPrestacaoServico>
    </Rps>
 </GerarNfseEnvio>
@@ -240,6 +252,8 @@ XML;
             'optante_simples_nacional' => 2,
             'incentivo_fiscal'        => 2,
             'numero_nbs'              => '',
+            'item_lista_servico'      => '',
+            'codigo_cnae'             => '',
             'tomador_complemento'     => '',
         ], $d);
     }
