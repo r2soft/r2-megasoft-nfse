@@ -114,8 +114,6 @@ class MegasoftXmlBuilder
             <Exigibilidade>{$d['exigibilidade']}</Exigibilidade>
             {$numeroNbs}
             <Discriminacao>{$this->esc($d['discriminacao'])}</Discriminacao>
-            {$itemListaServico}
-            {$codigoCnae}
          </Servico>
          <Prestador>
             <CpfCnpj>
