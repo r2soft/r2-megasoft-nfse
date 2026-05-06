@@ -137,8 +137,6 @@ class MegasoftXmlBuilder
                <CodigoMunicipio>{$d['tomador_cod_municipio']}</CodigoMunicipio>
             </Endereco>
          </Tomador>
-         <OptanteSimplesNacional>{$d['optante_simples_nacional']}</OptanteSimplesNacional>
-         <IncentivoFiscal>{$d['incentivo_fiscal']}</IncentivoFiscal>
       </InfDeclaracaoPrestacaoServico>
    </Rps>
 </GerarNfseEnvio>
