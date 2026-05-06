@@ -109,9 +109,9 @@ class MegasoftXmlBuilder
                <DescontoCondicionado>{$d['desconto_condicionado']}</DescontoCondicionado>
             </Valores>
             <IssRetido>{$d['iss_retido']}</IssRetido>
-            {$itemListaServico}
             <CodigoMunicipio>{$d['codigo_municipio']}</CodigoMunicipio>
             <CodigoTributacaoMunicipio>{$d['codigo_tributacao']}</CodigoTributacaoMunicipio>
+            {$itemListaServico}
             {$codigoCnae}
             <Exigibilidade>{$d['exigibilidade']}</Exigibilidade>
             {$numeroNbs}
