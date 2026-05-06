@@ -111,11 +111,11 @@ class MegasoftXmlBuilder
             <IssRetido>{$d['iss_retido']}</IssRetido>
             <CodigoMunicipio>{$d['codigo_municipio']}</CodigoMunicipio>
             <CodigoTributacaoMunicipio>{$d['codigo_tributacao']}</CodigoTributacaoMunicipio>
-            {$itemListaServico}
-            {$codigoCnae}
             <Exigibilidade>{$d['exigibilidade']}</Exigibilidade>
             {$numeroNbs}
             <Discriminacao>{$this->esc($d['discriminacao'])}</Discriminacao>
+            {$itemListaServico}
+            {$codigoCnae}
          </Servico>
          <Prestador>
             <CpfCnpj>
