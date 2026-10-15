@@ -5,6 +5,7 @@ namespace R2soft\MegasoftNfse;
 class MegasoftXmlBuilder
 {
     const NAMESPACE_XSD = 'http://megasoftarrecadanet.com.br/xsd/nfse_v01.xsd';
+    const MAX_COMPLEMENTO = 30;
 
     /**
      * Monta o XML GerarNfseEnvio sem assinatura.
@@ -66,8 +67,11 @@ class MegasoftXmlBuilder
             ? "<Cpf>{$d['tomador_cpf_cnpj']}</Cpf>"
             : "<Cnpj>{$d['tomador_cpf_cnpj']}</Cnpj>";
 
-        $complemento = !empty($d['tomador_complemento'])
-            ? "<Complemento>" . $this->esc($d['tomador_complemento']) . "</Complemento>"
+        // Jaraguá recusa complemento com mais de 30 caracteres ("[L000] O campo de complemento
+        // do tomador não deve ser maior que 30 caracteres."); o cadastro do cliente não tem esse limite.
+        $complementoTomador = $this->cortar($d['tomador_complemento'], self::MAX_COMPLEMENTO);
+        $complemento = $complementoTomador !== ''
+            ? "<Complemento>" . $this->esc($complementoTomador) . "</Complemento>"
             : '';
 
         $numeroNbs = !empty($d['numero_nbs'])
@@ -199,6 +203,16 @@ XML;
    </Prestador>
 </ConsultarNfseRpsEnvio>
 XML;
+    }
+
+    /** Corta em $max caracteres (não bytes), sem depender de mbstring. */
+    private function cortar(?string $value, int $max): string
+    {
+        $value = trim((string) $value);
+        if (preg_match('/^.{0,' . $max . '}/us', $value, $m)) {
+            return rtrim($m[0]);
+        }
+        return substr($value, 0, $max); // UTF-8 inválido
     }
 
     private function esc(string $value): string
