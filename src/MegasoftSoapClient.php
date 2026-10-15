@@ -213,6 +213,16 @@ class MegasoftSoapClient
                 . '</Confirmacao></NfseCancelamento></RetCancelamento>'
                 . '</CancelarNfseResposta>';
         }
+        if ($operacao === 'ConsultarNfsePorRps') {
+            return '<?xml version="1.0" encoding="UTF-8"?>'
+                . '<ConsultarNfseRpsResposta xmlns="http://megasoftarrecadanet.com.br/xsd/nfse_v01.xsd">'
+                . '<CompNfse><Nfse versao="1.00"><InfNfse>'
+                . '<Numero>99999</Numero>'
+                . '<CodigoVerificacao>MOCK00</CodigoVerificacao>'
+                . '<DataEmissao>' . date('Y-m-d') . 'T' . date('H:i:s') . '</DataEmissao>'
+                . '</InfNfse></Nfse></CompNfse>'
+                . '</ConsultarNfseRpsResposta>';
+        }
         return '<?xml version="1.0" encoding="UTF-8"?><MockResposta/>';
     }
 }
