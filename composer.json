@@ -2,7 +2,7 @@
     "name": "r2soft/nfse-megasoft",
     "description": "Integração NFSe Megasoft ABRASF v2.04 — emissão, cancelamento e consulta via SOAP",
     "type": "library",
-    "license": "proprietary",
+    "license": "MIT",
     "require": {
         "php": ">=7.3",
         "ext-openssl": "*",
